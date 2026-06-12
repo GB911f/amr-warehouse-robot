@@ -199,11 +199,10 @@ model-viewer{
 
 /* ===== ALGO CHIPS ===== */
 .algos{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 4px}
-.chip{-webkit-appearance:none;appearance:none;font-family:inherit;font-size:14px;font-weight:500;padding:8px 16px;border-radius:980px;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.78);background:transparent;cursor:pointer;transition:border-color .2s,color .2s,background .2s,box-shadow .2s,transform .15s}
-.chip:hover{color:#fff;border-color:rgba(255,255,255,.42)}
+.chip{-webkit-appearance:none;appearance:none;touch-action:manipulation;font-family:inherit;font-size:14px;font-weight:500;padding:8px 16px;border-radius:980px;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.78);background:transparent;cursor:pointer;transition:border-color .2s,color .2s,background .2s,box-shadow .2s,transform .15s}
+@media(hover:hover){.chip:hover{color:#fff;border-color:rgba(255,255,255,.42)}}
 .chip:active{transform:translateY(1px)}
 .chip--on{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 24px rgba(10,132,255,.45)}
-.chip--on:hover{color:#fff}
 .algos__hint{font-size:13px;color:var(--blue-bright);margin-top:14px;letter-spacing:.01em}
 
 /* ===== A* DEMO ===== */
