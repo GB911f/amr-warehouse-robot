@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AMR · Autonomous Mobile Robot</title>
+<meta name="description" content="An autonomous mobile robot that navigates a warehouse entirely on-board — built by four students at HSE Faculty of Computer Science. Navigation, computer vision, video stabilization and a local operator system." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=5" />
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#top" class="nav__brand"><span class="nav__dot"></span> AMR</a>
+    <nav class="nav__links">
+      <a href="#robot">Robot</a>
+      <a href="#navigation">Navigation</a>
+      <a href="#operator">Operator</a>
+      <a href="#vision">Vision</a>
+      <a href="#stabilization">Stabilization</a>
+      <a href="#field">In the field</a>
+    </nav>
+    <a href="#team" class="nav__cta">The team</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero__content">
+    <p class="eyebrow reveal">Bachelor's thesis · HSE Faculty of Computer Science · 2026</p>
+    <h1 class="hero__title reveal">An autonomous robot<br>that finds its own way.</h1>
+    <p class="hero__sub reveal">A four-wheel mobile robot that maps a warehouse and plans every route — all on-board, with no Wi-Fi, no GPS and no cloud. Four theses, one machine.</p>
+    <div class="hero__actions reveal">
+      <a href="#robot" class="btn btn--primary">Meet the robot</a>
+      <a href="#team" class="btn btn--ghost">Who built it</a>
+    </div>
+  </div>
+  <div class="hero__scroll"><span></span></div>
+</section>
+
+<!-- ROBOT / 3D MODEL -->
+<section class="model" id="robot">
+  <div class="wrap model__head">
+    <p class="kicker reveal">The platform</p>
+    <h2 class="display reveal">Designed part by part.<br>Built to deliver.</h2>
+    <p class="lead reveal">A 162-part four-wheel chassis, modelled from scratch and carried into the real world. Drag to explore it.</p>
+  </div>
+
+  <div class="model__stage reveal">
+    <model-viewer
+      src="assets/model/robot.glb"
+      alt="3D model of the autonomous mobile robot chassis"
+      camera-controls
+      touch-action="pan-y"
+      auto-rotate
+      auto-rotate-delay="0"
+      rotation-per-second="14deg"
+      interaction-prompt="none"
+      shadow-intensity="1"
+      shadow-softness="0.9"
+      exposure="1.05"
+      environment-image="neutral"
+      camera-orbit="35deg 75deg 105%"
+      min-camera-orbit="auto auto 60%"
+      max-camera-orbit="auto auto 160%"
+      camera-target="0m 0.05m 0m"
+      loading="eager">
+      <div class="model__loader" slot="poster"><span></span> Loading model…</div>
+    </model-viewer>
+    <p class="model__hint">Drag to rotate · scroll to zoom</p>
+  </div>
+
+  <div class="wrap specs reveal">
+    <div class="spec"><b>4×4</b><span>independently driven wheels</span></div>
+    <div class="spec"><b>Livox Mid-360</b><span>solid-state 3D LiDAR, 40 m</span></div>
+    <div class="spec"><b>NucBox K10</b><span>CPU-only on-board mini-PC</span></div>
+    <div class="spec"><b>0 cloud</b><span>fully offline, fully on-board</span></div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="section section--light overview" id="overview">
+  <div class="wrap">
+    <p class="kicker reveal">One robot, four problems</p>
+    <h2 class="display reveal">One factory-floor problem, divided four ways.</h2>
+    <p class="lead reveal">Each of us took one layer of the problem. The core of each is built and validated in a Gazebo simulation, with the first pieces already running on the physical rover — together, a path toward a robot you can simply tell “take this there.”</p>
+
+    <div class="pillars reveal">
+      <a href="#navigation" class="pillar">
+        <span class="pillar__idx">01</span>
+        <h3>Autonomous-navigation software</h3>
+        <p>The path-planning core, a graph of the whole facility and the planners that compute the optimal route, plus the operator-interface front-end and field testing on the rover.</p>
+        <span class="pillar__by">Georgii Berg</span>
+      </a>
+      <a href="#operator" class="pillar">
+        <span class="pillar__idx">02</span>
+        <h3>Operator system &amp; simulation</h3>
+        <p>The system that puts those routes to work, a ROS 2, Gazebo, Nav2 simulation pipeline and a FastAPI dispatch back-end that lets staff task the robot offline.</p>
+        <span class="pillar__by">Maxim Bortnik</span>
+      </a>
+      <a href="#vision" class="pillar">
+        <span class="pillar__idx">03</span>
+        <h3>Computer vision</h3>
+        <p>One camera that follows lines, reads markers, names obstacles and catches what the LiDAR misses.</p>
+        <span class="pillar__by">Kirill Budyak</span>
+      </a>
+      <a href="#stabilization" class="pillar">
+        <span class="pillar__idx">04</span>
+        <h3>Video stabilization &amp; tracking</h3>
+        <p>A light classical stabilizer and the tracking that keeps a person locked in frame while the robot rolls over uneven floors.</p>
+        <span class="pillar__by">Viktoriia Korableva</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- NAVIGATION -->
+<section class="section section--dark section--tall" id="navigation">
+  <div class="wrap wrap--split">
+    <div class="split__text">
+      <p class="kicker reveal">01 · Navigation &amp; planning</p>
+      <h2 class="display reveal">The optimal route, in a fraction of a millisecond.</h2>
+      <p class="lead lead--muted reveal">The facility becomes a weighted graph — stations and intersections as vertices, aisles as edges. A family of planners shares one interface, so the strategy can switch on the fly.</p>
+      <div class="algos reveal">
+        <button class="chip chip--on" data-algo="A*">A*</button>
+        <button class="chip" data-algo="Dijkstra">Dijkstra</button>
+        <button class="chip" data-algo="Theta*">Theta*</button>
+        <button class="chip" data-algo="JPS">JPS</button>
+        <button class="chip" data-algo="RRT">RRT</button>
+        <button class="chip" data-algo="D* Lite">D* Lite</button>
+      </div>
+      <p class="algos__hint reveal">Tap an algorithm to watch it run →</p>
+      <ul class="pipe pipe--dark reveal">
+        <li><b>A* matches Dijkstra's optimal cost</b> on every one of 506 station-to-station missions.</li>
+        <li><b>54.8% fewer node expansions</b> than Dijkstra, which is kept as the optimality oracle.</li>
+        <li><b>Theta*</b> returns shorter, smoother paths for a small time premium.</li>
+        <li><b>Mann–Whitney U</b> testing confirms the difference is statistically significant.</li>
+      </ul>
+    </div>
+    <div class="split__visual reveal">
+      <div class="demo">
+        <div class="demo__bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <em>planner · <span id="demoAlgo">A*</span> · warehouse grid</em>
+          <button id="replayBtn" class="replay">↻ Replay</button>
+        </div>
+        <canvas id="planCanvas" class="demo__view"></canvas>
+        <div class="demo__legend">
+          <span><i class="sw sw--front"></i> Frontier</span>
+          <span><i class="sw sw--seen"></i> Explored</span>
+          <span><i class="sw sw--path"></i> Route</span>
+        </div>
+      </div>
+      <p class="caption" id="demoCaption">Live A*: a heuristic pulls the frontier toward the goal, so it settles on the shortest route while exploring little.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATOR -->
+<section class="section section--light section--tall" id="operator">
+  <div class="wrap wrap--split">
+    <div class="split__text">
+      <p class="kicker reveal">02 · Operator system</p>
+      <h2 class="display reveal">Tell the robot where to go.</h2>
+      <p class="lead reveal">A progressive web app served straight from the robot's mini-PC over the local network. A FastAPI backend with embedded storage turns a staff request into a dispatched mission — entirely offline.</p>
+      <ul class="pipe reveal">
+        <li><b>Request a delivery</b> — pick a source and destination station.</li>
+        <li><b>Live facility map</b> — the road network and the robot's current route.</li>
+        <li><b>Task queue</b> — the active stage and operator confirmation.</li>
+        <li><b>Offline-first</b> — HTTP and WebSocket updates with no internet at all.</li>
+      </ul>
+    </div>
+    <div class="split__visual reveal">
+      <div class="browser">
+        <div class="browser__bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <em>http://amr.local — Operator console</em>
+        </div>
+        <img src="assets/img/operator.jpg" alt="Operator web app with the facility map and the robot's current route" loading="lazy" />
+      </div>
+      <p class="caption">The operator console: a delivery request, the live facility map with the robot's current route, and the task queue — all served from the robot over the local network.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="section section--dark section--tall" id="vision">
+  <div class="wrap">
+    <p class="kicker reveal">03 · Computer vision</p>
+    <h2 class="display reveal">A robot that also sees — on plain CPU.</h2>
+    <p class="lead lead--muted reveal">A single camera runs four independent channels, each covering a specific blind spot of a LiDAR-only stack. No GPU, no cloud — every model fits the on-board mini-PC.</p>
+
+    <div class="vchan reveal">
+      <article class="vcard">
+        <figure><img src="assets/img/cv-line.jpg" alt="Camera frame with a yellow lane highlighted by an HSV mask" loading="lazy" /></figure>
+        <h3>Stick-to-line</h3>
+        <p>An HSV mask finds the painted aisle; a P-controller turns its offset into wheel speeds. <b>2.4 cm</b> mean cross-track error.</p>
+      </article>
+      <article class="vcard">
+        <figure><img src="assets/img/cv-aruco.jpg" alt="Nine ArUco markers detected on a hand-held sheet" loading="lazy" /></figure>
+        <h3>ArUco re-localization</h3>
+        <p>Printable markers and <i>solvePnP</i> give absolute pose fixes that cancel odometry drift — <b>≈10× lower</b> position error.</p>
+      </article>
+      <article class="vcard">
+        <figure><img src="assets/img/cv-yolo.jpg" alt="YOLOv8 detecting a cardboard box in the warehouse" loading="lazy" /></figure>
+        <h3>Object detection</h3>
+        <p>A lightweight YOLOv8n labels boxes, pallets, shelves and people — so an obstacle arrives as “cardboard box”, not a blob.</p>
+      </article>
+      <article class="vcard">
+        <figure><img src="assets/img/cv-depth.jpg" alt="Rainbow depth point cloud around the robot" loading="lazy" /></figure>
+        <h3>Depth blind-spot</h3>
+        <p>A depth layer catches low obstacles that sit below the laser plane and feeds them to the planner, so it can stop for a box the LiDAR alone would drive into.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- STABILIZATION -->
+<section class="section section--light section--tall" id="stabilization">
+  <div class="wrap wrap--split wrap--reverse">
+    <div class="split__text">
+      <p class="kicker reveal">04 · Video stabilization &amp; tracking</p>
+      <h2 class="display reveal">Steady eyes that keep the target locked.</h2>
+      <p class="lead reveal">A camera on a moving robot jitters — and jitter breaks the very tracking that lets it follow a person. The pipeline has two halves: a lightweight classical stabilizer (Lucas–Kanade flow + a Kalman RTS smoother) cleans the stream first, then a person detector and a motion tracker keep one target locked frame to frame.</p>
+      <ul class="pipe reveal">
+        <li><b>Stabilizer</b> — ~40% less residual jitter than the baseline, while keeping 97% of the field of view.</li>
+        <li><b>Runs on the mini-PC</b> — ~155 FPS of standard OpenCV CPU primitives, no GPU.</li>
+        <li><b>Tracking</b> — a YOLO11n detector and an OC-SORT tracker lock onto one person; the bounding box drives the robot's yaw and speed.</li>
+        <li><b>Continuity under shake</b> — stabilization keeps the target identity alive: −15% lost segments and −18% ID switches on the same person.</li>
+        <li><b>Neutral on calm video</b> — it never makes an already-stable stream worse.</li>
+      </ul>
+    </div>
+    <div class="split__visual reveal">
+      <figure class="frame">
+        <video autoplay loop muted playsinline preload="metadata" poster="assets/media/stab-sbs-poster.jpg">
+          <source src="assets/media/stab-sbs.mp4" type="video/mp4" />
+        </video>
+        <figcaption>Raw (left) vs stabilized (right) — rigid shelf edges hold steady after stabilization.</figcaption>
+      </figure>
+      <figure class="frame frame--soft">
+        <img src="assets/img/stab-tracking.jpg" alt="A person tracked with a bounding box in the warehouse" loading="lazy" />
+        <figcaption>Downstream person-following: the locked target drives the robot's yaw and speed.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- FIELD / MEDIA -->
+<section class="section section--black section--tall" id="field">
+  <div class="wrap">
+    <p class="kicker reveal">In the field</p>
+    <h2 class="display reveal">Off the simulator. Onto the asphalt.</h2>
+    <p class="lead lead--muted reveal">The physical four-wheel rover — outdoor lighting, real dust, the same code that runs in simulation.</p>
+
+    <div class="video reveal">
+      <video controls playsinline preload="metadata" poster="assets/media/robot-clip-poster.jpg">
+        <source src="assets/media/robot-clip.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <div class="masonry reveal">
+      <figure class="ph ph--tall"><img src="assets/img/robot-front2.jpg" alt="Front view of the rover on the test track" loading="lazy" /></figure>
+      <figure class="ph"><img src="assets/img/robot-side.jpg" alt="The physical rover driving on the test track beside a loading ramp" loading="lazy" /></figure>
+      <figure class="ph"><img src="assets/img/nav-livox.jpg" alt="Live Livox point cloud during a field test" loading="lazy" /></figure>
+      <figure class="ph"><img src="assets/img/sim-aruco.jpg" alt="ArUco markers detected with pose and distance in the Gazebo simulation" loading="lazy" /></figure>
+      <figure class="ph"><img src="assets/img/sim-warehouse.jpg" alt="Gazebo warehouse used for simulation" loading="lazy" /></figure>
+      <figure class="ph"><img src="assets/img/nav-costmap.jpg" alt="Nav2 costmap with obstacle inflation in RViz" loading="lazy" /></figure>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section section--dark results" id="results">
+  <div class="wrap">
+    <p class="kicker reveal">Results</p>
+    <h2 class="display reveal">What we measured.</h2>
+    <div class="stats">
+      <div class="stat reveal">
+        <div class="stat__val" data-count="54.8" data-decimals="1" data-suffix="%">0</div>
+        <div class="stat__label">fewer node expansions than Dijkstra, same optimal cost</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat__val" data-count="2.4" data-decimals="1" data-suffix=" cm">0</div>
+        <div class="stat__label">mean cross-track error on the camera line-following baseline</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat__val" data-count="40" data-prefix="~" data-suffix="%">0</div>
+        <div class="stat__label">less residual jitter from the stabilizer, at 97% field of view</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat__val" data-count="89" data-suffix=" / 89">0</div>
+        <div class="stat__label">end-to-end depot → pick → drop missions in the Gazebo simulation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section section--light section--tall" id="team">
+  <div class="wrap">
+    <p class="kicker reveal">The team</p>
+    <h2 class="display reveal">Four theses. One robot.</h2>
+    <p class="lead reveal">HSE University · Faculty of Computer Science · Data Science and Business Analytics · 2026. Supervisor: Senior Lecturer Ivan Kopylov.</p>
+
+    <div class="team reveal">
+      <article class="member">
+        <div class="member__photo"><img src="assets/img/member-berg.jpg" alt="Georgii Berg" loading="lazy" /></div>
+        <div class="member__body">
+          <h3>Georgii Berg</h3>
+          <p class="member__role">Autonomous-navigation software</p>
+          <p class="member__desc">The path-planning core and its benchmark, the front-end of the operator web interface, and hands-on field testing of the physical rover.</p>
+        </div>
+      </article>
+      <article class="member">
+        <div class="member__photo"><img src="assets/img/member-bortnik.jpg" alt="Maxim Bortnik" loading="lazy" /></div>
+        <div class="member__body">
+          <h3>Maxim Bortnik</h3>
+          <p class="member__role">Autonomous-navigation software</p>
+          <p class="member__desc">The system that runs the navigation, a ROS 2, Gazebo, Nav2 simulation pipeline and a FastAPI dispatch back-end that turns an operator's request into a mission, offline.</p>
+        </div>
+      </article>
+      <article class="member">
+        <div class="member__photo"><img src="assets/img/member-budyak.jpg" alt="Kirill Budyak" loading="lazy" /></div>
+        <div class="member__body">
+          <h3>Kirill Budyak</h3>
+          <p class="member__role">Computer-vision layer</p>
+          <p class="member__desc">Line following, ArUco re-localization, object detection and a depth blind-spot layer — four channels on one camera.</p>
+        </div>
+      </article>
+      <article class="member">
+        <div class="member__photo"><img src="assets/img/member-korableva.jpg" alt="Viktoriia Korableva" loading="lazy" /></div>
+        <div class="member__body">
+          <h3>Viktoriia Korableva</h3>
+          <p class="member__role">Video stabilization &amp; tracking</p>
+          <p class="member__desc">A CPU-deployable classical stabilizer, chosen by controlled comparison and validated by its effect on person-tracking.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSER -->
+<section class="closer">
+  <div class="wrap reveal">
+    <h2 class="closer__title">Fully autonomous.<br><span class="grad">No Wi-Fi. No GPS. No cloud.</span></h2>
+    <p class="closer__sub">On-board sensing, vision, stabilization and planning — ready to work where there is no network and no infrastructure.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__left">
+      <img src="assets/img/hse-logo.jpg" alt="HSE University" class="footer__logo" />
+      <div>
+        <p class="footer__brand"><span class="nav__dot"></span> AMR · Autonomous Mobile Robot</p>
+        <p class="footer__meta">Berg · Budyak · Korableva · Bortnik — HSE Faculty of Computer Science, DSBA · 2026</p>
+      </div>
+    </div>
+    <p class="footer__note">Bachelor's thesis project. Supervisor — Senior Lecturer I. Kopylov.</p>
+  </div>
+</footer>
+
+<script src="app.js?v=4"></script>
+</body>
+</html>
