@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>AMR · Autonomous Mobile Robot</title>
-<meta name="description" content="An autonomous mobile robot that navigates a warehouse entirely on-board — built by four students at HSE Faculty of Computer Science. Navigation, computer vision, video stabilization and a local operator system." />
+<meta name="description" content="An autonomous mobile robot that navigates a warehouse entirely on-board — navigation, computer vision, video stabilization and a local operator system, with no Wi-Fi, GPS or cloud." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -25,7 +25,7 @@
       <a href="#stabilization">Stabilization</a>
       <a href="#field">In the field</a>
     </nav>
-    <a href="#team" class="nav__cta">The team</a>
+    <a href="#results" class="nav__cta">Results</a>
   </div>
 </header>
 
@@ -34,10 +34,10 @@
   <div class="hero__content">
     <p class="eyebrow reveal">Bachelor's thesis · HSE Faculty of Computer Science · 2026</p>
     <h1 class="hero__title reveal">An autonomous robot<br>that finds its own way.</h1>
-    <p class="hero__sub reveal">A four-wheel mobile robot that maps a warehouse and plans every route — all on-board, with no Wi-Fi, no GPS and no cloud. Four theses, one machine.</p>
+    <p class="hero__sub reveal">A four-wheel mobile robot that maps a warehouse and plans every route — all on-board, with no Wi-Fi, no GPS and no cloud.</p>
     <div class="hero__actions reveal">
       <a href="#robot" class="btn btn--primary">Meet the robot</a>
-      <a href="#team" class="btn btn--ghost">Who built it</a>
+      <a href="#results" class="btn btn--ghost">See the results</a>
     </div>
   </div>
   <div class="hero__scroll"><span></span></div>
@@ -87,33 +87,29 @@
 <section class="section section--light overview" id="overview">
   <div class="wrap">
     <p class="kicker reveal">One robot, four problems</p>
-    <h2 class="display reveal">One factory-floor problem, divided four ways.</h2>
-    <p class="lead reveal">Each of us took one layer of the problem. The core of each is built and validated in a Gazebo simulation, with the first pieces already running on the physical rover — together, a path toward a robot you can simply tell “take this there.”</p>
+    <h2 class="display reveal">One factory-floor problem, four subsystems.</h2>
+    <p class="lead reveal">Each layer of the problem is solved on its own. The core of each is built and validated in a Gazebo simulation, with the first pieces already running on the physical rover — together, a path toward a robot you can simply tell “take this there.”</p>
 
     <div class="pillars reveal">
       <a href="#navigation" class="pillar">
         <span class="pillar__idx">01</span>
         <h3>Autonomous-navigation software</h3>
         <p>The path-planning core, a graph of the whole facility and the planners that compute the optimal route, plus the operator-interface front-end and field testing on the rover.</p>
-        <span class="pillar__by">Georgii Berg</span>
       </a>
       <a href="#operator" class="pillar">
         <span class="pillar__idx">02</span>
         <h3>Operator system &amp; simulation</h3>
         <p>The system that puts those routes to work, a ROS 2, Gazebo, Nav2 simulation pipeline and a FastAPI dispatch back-end that lets staff task the robot offline.</p>
-        <span class="pillar__by">Maxim Bortnik</span>
       </a>
       <a href="#vision" class="pillar">
         <span class="pillar__idx">03</span>
         <h3>Computer vision</h3>
         <p>One camera that follows lines, reads markers, names obstacles and catches what the LiDAR misses.</p>
-        <span class="pillar__by">Kirill Budyak</span>
       </a>
       <a href="#stabilization" class="pillar">
         <span class="pillar__idx">04</span>
         <h3>Video stabilization &amp; tracking</h3>
         <p>A light classical stabilizer and the tracking that keeps a person locked in frame while the robot rolls over uneven floors.</p>
-        <span class="pillar__by">Viktoriia Korableva</span>
       </a>
     </div>
   </div>
@@ -294,50 +290,6 @@
   </div>
 </section>
 
-<!-- TEAM -->
-<section class="section section--light section--tall" id="team">
-  <div class="wrap">
-    <p class="kicker reveal">The team</p>
-    <h2 class="display reveal">Four theses. One robot.</h2>
-    <p class="lead reveal">HSE University · Faculty of Computer Science · Data Science and Business Analytics · 2026. Supervisor: Senior Lecturer Ivan Kopylov.</p>
-
-    <div class="team reveal">
-      <article class="member">
-        <div class="member__photo"><img src="assets/img/member-berg.jpg" alt="Georgii Berg" loading="lazy" /></div>
-        <div class="member__body">
-          <h3>Georgii Berg</h3>
-          <p class="member__role">Autonomous-navigation software</p>
-          <p class="member__desc">The path-planning core and its benchmark, the front-end of the operator web interface, and hands-on field testing of the physical rover.</p>
-        </div>
-      </article>
-      <article class="member">
-        <div class="member__photo"><img src="assets/img/member-bortnik.jpg" alt="Maxim Bortnik" loading="lazy" /></div>
-        <div class="member__body">
-          <h3>Maxim Bortnik</h3>
-          <p class="member__role">Autonomous-navigation software</p>
-          <p class="member__desc">The system that runs the navigation, a ROS 2, Gazebo, Nav2 simulation pipeline and a FastAPI dispatch back-end that turns an operator's request into a mission, offline.</p>
-        </div>
-      </article>
-      <article class="member">
-        <div class="member__photo"><img src="assets/img/member-budyak.jpg" alt="Kirill Budyak" loading="lazy" /></div>
-        <div class="member__body">
-          <h3>Kirill Budyak</h3>
-          <p class="member__role">Computer-vision layer</p>
-          <p class="member__desc">Line following, ArUco re-localization, object detection and a depth blind-spot layer — four channels on one camera.</p>
-        </div>
-      </article>
-      <article class="member">
-        <div class="member__photo"><img src="assets/img/member-korableva.jpg" alt="Viktoriia Korableva" loading="lazy" /></div>
-        <div class="member__body">
-          <h3>Viktoriia Korableva</h3>
-          <p class="member__role">Video stabilization &amp; tracking</p>
-          <p class="member__desc">A CPU-deployable classical stabilizer, chosen by controlled comparison and validated by its effect on person-tracking.</p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
 <!-- CLOSER -->
 <section class="closer">
   <div class="wrap reveal">
@@ -353,10 +305,10 @@
       <img src="assets/img/hse-logo.jpg" alt="HSE University" class="footer__logo" />
       <div>
         <p class="footer__brand"><span class="nav__dot"></span> AMR · Autonomous Mobile Robot</p>
-        <p class="footer__meta">Berg · Budyak · Korableva · Bortnik — HSE Faculty of Computer Science, DSBA · 2026</p>
+        <p class="footer__meta">HSE Faculty of Computer Science · 2026</p>
       </div>
     </div>
-    <p class="footer__note">Bachelor's thesis project. Supervisor — Senior Lecturer I. Kopylov.</p>
+    <p class="footer__note">Bachelor's thesis project.</p>
   </div>
 </footer>
 
